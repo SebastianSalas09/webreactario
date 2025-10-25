@@ -1,0 +1,93 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  color: #2c3e50;
+  font-size: 2.5em;
+}
+
+.recetario-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+}
+
+.agregar-receta {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.agregar-receta h2 {
+  color: #27ae60;
+  margin-bottom: 15px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+button {
+  background: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+.btn-eliminar {
+  background: #e74c3c;
+}
+
+.btn-eliminar:hover {
+  background: #c0392b;
+}
+
+.receta-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.receta-card h3 {
+  color: #2c3e50;
+  margin-top: 0;
+}
+
+.detalles h4 {
+  color: #7f8c8d;
+  margin-bottom: 5px;
+}
+
+.detalles p {
+  white-space: pre-line;
+  line-height: 1.4;
+}

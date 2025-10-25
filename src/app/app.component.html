@@ -1,0 +1,41 @@
+<div class="container">
+  <header>
+    <h1>🍳 Mi Recetario</h1>
+  </header>
+
+  <div class="recetario-container">
+    <!-- Formulario para agregar recetas -->
+    <div class="agregar-receta">
+      <h2>Agregar Nueva Receta</h2>
+      <form (submit)="$event.preventDefault(); agregarReceta()">
+        <input type="text" [(ngModel)]="nuevaReceta.nombre" name="nombre" placeholder="Nombre de la receta" required>
+        <textarea [(ngModel)]="nuevaReceta.ingredientes" name="ingredientes" placeholder="Ingredientes" required></textarea>
+        <textarea [(ngModel)]="nuevaReceta.instrucciones" name="instrucciones" placeholder="Instrucciones" required></textarea>
+        <input type="text" [(ngModel)]="nuevaReceta.tiempo" name="tiempo" placeholder="Tiempo de preparación">
+        <button type="submit">Agregar Receta</button>
+      </form>
+    </div>
+
+    <!-- Lista de recetas -->
+    <div class="lista-recetas">
+      <h2>Mis Recetas</h2>
+      
+      @for (receta of recetas; track receta.nombre; let i = $index) {
+        <div class="receta-card">
+          <h3>{{ receta.nombre }}</h3>
+          <p><strong>⏱️ Tiempo:</strong> {{ receta.tiempo }}</p>
+          
+          <div class="detalles">
+            <h4>🥕 Ingredientes:</h4>
+            <p>{{ receta.ingredientes }}</p>
+            
+            <h4>👩‍🍳 Instrucciones:</h4>
+            <p>{{ receta.instrucciones }}</p>
+          </div>
+          
+          <button (click)="eliminarReceta(i)" class="btn-eliminar">Eliminar</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
