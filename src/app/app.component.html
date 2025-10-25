@@ -8,10 +8,10 @@
     <div class="barra-herramientas">
         <div class="controles-vista">
             <button (click)="cambiarVista('lista')" [class.activo]="vistaActiva === 'lista'">
-                📋 Vista Lista
+                 Vista Lista
             </button>
             <button (click)="cambiarVista('grid')" [class.activo]="vistaActiva === 'grid'">
-                🗂️ Vista Grid
+                 Vista Grid
             </button>
         </div>
         <div class="estadisticas">
@@ -87,21 +87,21 @@
         </div>
         
         <div class="acciones-form">
-            <button (click)="agregarReceta()" class="btn-primario">➕ Agregar Receta</button>
-            <button (click)="limpiarFormulario()" class="btn-secundario">🗑️ Limpiar</button>
+            <button (click)="agregarReceta()" class="btn-primario"> Agregar Receta</button>
+            <button (click)="limpiarFormulario()" class="btn-secundario"> Limpiar</button>
         </div>
     </div>
 
     <!-- Buscador -->
     <div class="buscador">
         <input [value]="terminoBusqueda" (input)="onBuscarChange($event)" 
-               placeholder="🔍 Buscar recetas por nombre, categoría o ingredientes..." 
+               placeholder=" Buscar recetas por nombre, categoría o ingredientes..." 
                class="buscador-input">
     </div>
 
     <!-- Lista de recetas - VISTA LISTA -->
     <div class="recetas-container" *ngIf="vistaActiva === 'lista'">
-        <h2>📖 Mis Recetas ({{recetasFiltradas.length}})</h2>
+        <h2> Mis Recetas ({{recetasFiltradas.length}})</h2>
         
         <div *ngIf="recetasFiltradas.length === 0" class="no-recetas">
             <p>No hay recetas que coincidan con tu búsqueda.</p>
@@ -122,8 +122,8 @@
                               [class.difícil]="receta.dificultad === 'Difícil'">
                             {{ receta.dificultad }}
                         </span>
-                        <span class="tiempo">⏱️ {{ receta.tiempo }}</span>
-                        <span class="fecha">📅 {{ receta.fechaCreacion | date:'dd/MM/yyyy' }}</span>
+                        <span class="tiempo"> {{ receta.tiempo }}</span>
+                        <span class="fecha"> {{ receta.fechaCreacion | date:'dd/MM/yyyy' }}</span>
                     </div>
                 </div>
                 <button (click)="toggleFavorito(receta)" class="btn-favorito" [class.favorito]="receta.favorito">
@@ -138,14 +138,14 @@
                 </div>
                 
                 <div class="instrucciones">
-                    <h4>👩‍🍳 Instrucciones:</h4>
+                    <h4> Instrucciones:</h4>
                     <p>{{ receta.instructions }}</p>
                 </div>
             </div>
 
             <div class="receta-actions">
-                <button (click)="editarReceta(receta)" class="btn-editar">✏️ Editar</button>
-                <button (click)="eliminarReceta(receta.id)" class="btn-eliminar">🗑️ Eliminar</button>
+                <button (click)="editarReceta(receta)" class="btn-editar"> Editar</button>
+                <button (click)="eliminarReceta(receta.id)" class="btn-eliminar"> Eliminar</button>
             </div>
         </div>
     </div>
@@ -178,13 +178,13 @@
                     <strong>Ingredientes:</strong> {{ receta.ingredients | slice:0:100 }}{{ receta.ingredients.length > 100 ? '...' : '' }}
                 </div>
                 
-                <div class="tiempo">⏱️ {{ receta.tiempo }}</div>
+                <div class="tiempo"> {{ receta.tiempo }}</div>
             </div>
             
             <div class="grid-actions">
-                <button (click)="verDetalles(receta)" class="btn-editar">👀 Ver</button>
-                <button (click)="editarReceta(receta)" class="btn-editar">✏️ Editar</button>
-                <button (click)="eliminarReceta(receta.id)" class="btn-eliminar">🗑️</button>
+                <button (click)="verDetalles(receta)" class="btn-editar"> Ver</button>
+                <button (click)="editarReceta(receta)" class="btn-editar"> Editar</button>
+                <button (click)="eliminarReceta(receta.id)" class="btn-eliminar"></button>
             </div>
         </div>
     </div>
