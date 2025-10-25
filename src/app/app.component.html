@@ -1,41 +1,191 @@
 <div class="container">
-  <header>
-    <h1>🍳 Mi Recetario</h1>
-  </header>
+    <header>
+        <h1>{{ title }}</h1>
+        <p>Tu libro de recetas digital</p>
+    </header>
 
-  <div class="recetario-container">
-    <!-- Formulario para agregar recetas -->
-    <div class="agregar-receta">
-      <h2>Agregar Nueva Receta</h2>
-      <form (submit)="$event.preventDefault(); agregarReceta()">
-        <input type="text" [(ngModel)]="nuevaReceta.nombre" name="nombre" placeholder="Nombre de la receta" required>
-        <textarea [(ngModel)]="nuevaReceta.ingredientes" name="ingredientes" placeholder="Ingredientes" required></textarea>
-        <textarea [(ngModel)]="nuevaReceta.instrucciones" name="instrucciones" placeholder="Instrucciones" required></textarea>
-        <input type="text" [(ngModel)]="nuevaReceta.tiempo" name="tiempo" placeholder="Tiempo de preparación">
-        <button type="submit">Agregar Receta</button>
-      </form>
-    </div>
-
-    <!-- Lista de recetas -->
-    <div class="lista-recetas">
-      <h2>Mis Recetas</h2>
-      
-      @for (receta of recetas; track receta.nombre; let i = $index) {
-        <div class="receta-card">
-          <h3>{{ receta.nombre }}</h3>
-          <p><strong>⏱️ Tiempo:</strong> {{ receta.tiempo }}</p>
-          
-          <div class="detalles">
-            <h4>🥕 Ingredientes:</h4>
-            <p>{{ receta.ingredientes }}</p>
-            
-            <h4>👩‍🍳 Instrucciones:</h4>
-            <p>{{ receta.instrucciones }}</p>
-          </div>
-          
-          <button (click)="eliminarReceta(i)" class="btn-eliminar">Eliminar</button>
+    <!-- Barra de herramientas -->
+    <div class="barra-herramientas">
+        <div class="controles-vista">
+            <button (click)="cambiarVista('lista')" [class.activo]="vistaActiva === 'lista'">
+                📋 Vista Lista
+            </button>
+            <button (click)="cambiarVista('grid')" [class.activo]="vistaActiva === 'grid'">
+                🗂️ Vista Grid
+            </button>
         </div>
-      }
+        <div class="estadisticas">
+            <span>Total: <span class="badge">{{ recetas.length }}</span></span>
+            <span>Favoritas: <span class="badge favorito">{{ contarFavoritas() }}</span></span>
+        </div>
     </div>
-  </div>
+
+    <!-- Panel de filtros -->
+    <div class="panel-filtros">
+        <div class="filtro-grupo">
+            <label>Filtrar por categoría:</label>
+            <select (change)="filtrarPorCategoria($event)">
+                <option value="">Todas las categorías</option>
+                <option *ngFor="let cat of categoriasUnicas" [value]="cat">{{ cat }}</option>
+            </select>
+        </div>
+        
+        <div class="filtro-grupo">
+            <label>Filtrar por dificultad:</label>
+            <select (change)="filtrarPorDificultad($event)">
+                <option value="">Todas las dificultades</option>
+                <option value="Fácil">Fácil</option>
+                <option value="Media">Media</option>
+                <option value="Difícil">Difícil</option>
+            </select>
+        </div>
+        
+        <div class="checkbox">
+            <input type="checkbox" id="soloFavoritas" (change)="toggleSoloFavoritas($event)">
+            <label for="soloFavoritas">Mostrar solo favoritas</label>
+        </div>
+        
+        <div class="checkbox">
+            <input type="checkbox" id="ordenarNombre" (change)="toggleOrdenarNombre($event)">
+            <label for="ordenarNombre">Ordenar por nombre</label>
+        </div>
+    </div>
+
+    <!-- Formulario para agregar recetas -->
+    <div class="formulario">
+        <h2>🍳 Agregar Nueva Receta</h2>
+        
+        <div class="form-group">
+            <input [(ngModel)]="nuevaReceta.nombre" placeholder="Nombre de la receta" class="form-input">
+        </div>
+        
+        <div class="form-fila">
+            <div class="form-group">
+                <input [(ngModel)]="nuevaReceta.categoria" placeholder="Categoría" class="form-input">
+            </div>
+            <div class="form-group">
+                <select [(ngModel)]="nuevaReceta.dificultad" class="form-select">
+                    <option value="Fácil">Fácil</option>
+                    <option value="Media">Media</option>
+                    <option value="Difícil">Difícil</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-fila">
+            <div class="form-group">
+                <input [(ngModel)]="nuevaReceta.tiempo" placeholder="Tiempo de preparación" class="form-input">
+            </div>
+            <div class="form-group">
+                <input type="text" [(ngModel)]="nuevaReceta.ingredients" placeholder="Ingredientes (separados por comas)" class="form-input">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <textarea [(ngModel)]="nuevaReceta.instructions" placeholder="Instrucciones paso a paso" 
+                     class="form-textarea" rows="4"></textarea>
+        </div>
+        
+        <div class="acciones-form">
+            <button (click)="agregarReceta()" class="btn-primario">➕ Agregar Receta</button>
+            <button (click)="limpiarFormulario()" class="btn-secundario">🗑️ Limpiar</button>
+        </div>
+    </div>
+
+    <!-- Buscador -->
+    <div class="buscador">
+        <input [value]="terminoBusqueda" (input)="onBuscarChange($event)" 
+               placeholder="🔍 Buscar recetas por nombre, categoría o ingredientes..." 
+               class="buscador-input">
+    </div>
+
+    <!-- Lista de recetas - VISTA LISTA -->
+    <div class="recetas-container" *ngIf="vistaActiva === 'lista'">
+        <h2>📖 Mis Recetas ({{recetasFiltradas.length}})</h2>
+        
+        <div *ngIf="recetasFiltradas.length === 0" class="no-recetas">
+            <p>No hay recetas que coincidan con tu búsqueda.</p>
+        </div>
+
+        <div *ngFor="let receta of recetasFiltradas" 
+             class="receta-card" 
+             [class.favorita]="receta.favorito">
+            
+            <div class="receta-header">
+                <div>
+                    <h3>{{ receta.nombre }}</h3>
+                    <div class="receta-meta">
+                        <span class="badge categoria">{{ receta.categoria || 'Sin categoría' }}</span>
+                        <span class="badge dificultad" 
+                              [class.fácil]="receta.dificultad === 'Fácil'"
+                              [class.media]="receta.dificultad === 'Media'" 
+                              [class.difícil]="receta.dificultad === 'Difícil'">
+                            {{ receta.dificultad }}
+                        </span>
+                        <span class="tiempo">⏱️ {{ receta.tiempo }}</span>
+                        <span class="fecha">📅 {{ receta.fechaCreacion | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                </div>
+                <button (click)="toggleFavorito(receta)" class="btn-favorito" [class.favorito]="receta.favorito">
+                    {{ receta.favorito ? '★ Favorita' : '☆ Marcar como favorita' }}
+                </button>
+            </div>
+            
+            <div class="receta-content">
+                <div class="ingredientes">
+                    <h4>🛒 Ingredientes:</h4>
+                    <p>{{ receta.ingredients }}</p>
+                </div>
+                
+                <div class="instrucciones">
+                    <h4>👩‍🍳 Instrucciones:</h4>
+                    <p>{{ receta.instructions }}</p>
+                </div>
+            </div>
+
+            <div class="receta-actions">
+                <button (click)="editarReceta(receta)" class="btn-editar">✏️ Editar</button>
+                <button (click)="eliminarReceta(receta.id)" class="btn-eliminar">🗑️ Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid de recetas - VISTA GRID -->
+    <div class="vista-grid" *ngIf="vistaActiva === 'grid'">
+        <div *ngFor="let receta of recetasFiltradas" 
+             class="receta-card-grid" 
+             [class.favorita]="receta.favorito">
+            
+            <div class="grid-header">
+                <h3>{{ receta.nombre }}</h3>
+                <button (click)="toggleFavorito(receta)" class="btn-favorito-grid">
+                    {{ receta.favorito ? '★' : '☆' }}
+                </button>
+            </div>
+            
+            <div class="grid-meta">
+                <span class="badge categoria">{{ receta.categoria || 'General' }}</span>
+                <span class="badge dificultad" 
+                      [class.fácil]="receta.dificultad === 'Fácil'"
+                      [class.media]="receta.dificultad === 'Media'" 
+                      [class.difícil]="receta.dificultad === 'Difícil'">
+                    {{ receta.dificultad }}
+                </span>
+            </div>
+            
+            <div class="grid-content">
+                <div class="ingredientes-preview">
+                    <strong>Ingredientes:</strong> {{ receta.ingredients | slice:0:100 }}{{ receta.ingredients.length > 100 ? '...' : '' }}
+                </div>
+                
+                <div class="tiempo">⏱️ {{ receta.tiempo }}</div>
+            </div>
+            
+            <div class="grid-actions">
+                <button (click)="verDetalles(receta)" class="btn-editar">👀 Ver</button>
+                <button (click)="editarReceta(receta)" class="btn-editar">✏️ Editar</button>
+                <button (click)="eliminarReceta(receta.id)" class="btn-eliminar">🗑️</button>
+            </div>
+        </div>
+    </div>
 </div>

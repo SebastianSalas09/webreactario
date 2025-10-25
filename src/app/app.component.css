@@ -1,73 +1,117 @@
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
+/* ... (mantén todos tus estilos existentes) ... */
 
-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
+/* 🔹 NUEVOS ESTILOS AGREGADOS */
 
-header h1 {
-  color: #2c3e50;
-  font-size: 2.5em;
-}
-
-.recetario-container {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 30px;
-}
-
-.agregar-receta {
+/* Barra de herramientas */
+.barra-herramientas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
   background: #f8f9fa;
-  padding: 20px;
   border-radius: 10px;
 }
 
-.agregar-receta h2 {
-  color: #27ae60;
-  margin-bottom: 15px;
+.controles-vista button {
+  background: #e9ecef;
+  border: 2px solid #dee2e6;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
+.controles-vista button.activo {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.estadisticas .badge {
+  background: #6c757d;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8em;
+  margin-left: 10px;
+}
+
+.estadisticas .badge.favorito {
+  background: #ffc107;
+  color: #000;
+}
+
+/* Panel de filtros */
+.panel-filtros {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: #e3f2fd;
+  border-radius: 10px;
+  flex-wrap: wrap;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filtro-grupo select {
+  padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 14px;
+  background: white;
 }
 
-textarea {
-  height: 80px;
-  resize: vertical;
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 
-button {
-  background: #3498db;
+/* Formulario mejorado */
+.form-fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.acciones-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-primario {
+  background: #28a745;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  flex: 1;
 }
 
-button:hover {
-  background: #2980b9;
+.btn-primario:hover {
+  background: #218838;
 }
 
-.btn-eliminar {
-  background: #e74c3c;
+.btn-secundario {
+  background: #6c757d;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.btn-eliminar:hover {
-  background: #c0392b;
-}
-
+/* Tarjetas de recetas mejoradas */
 .receta-card {
   background: white;
   border: 1px solid #ddd;
@@ -75,19 +119,195 @@ button:hover {
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.receta-card h3 {
-  color: #2c3e50;
-  margin-top: 0;
+.receta-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
-.detalles h4 {
-  color: #7f8c8d;
-  margin-bottom: 5px;
+.receta-card.favorita {
+  border-left: 4px solid #ffc107;
+  background: #fffdf6;
 }
 
-.detalles p {
-  white-space: pre-line;
+.receta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.receta-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+.badge.categoria {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.badge.dificultad {
+  color: white;
+}
+
+.badge.dificultad.fácil {
+  background: #28a745;
+}
+
+.badge.dificultad.media {
+  background: #ffc107;
+  color: #000;
+}
+
+.badge.dificultad.difícil {
+  background: #dc3545;
+}
+
+.tiempo {
+  color: #6c757d;
+  font-size: 0.9em;
+}
+
+/* Acciones de receta */
+.receta-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.btn-favorito {
+  background: #ffc107;
+  color: #000;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.btn-favorito.favorito {
+  background: #ffc107;
+  font-weight: bold;
+}
+
+.btn-editar {
+  background: #17a2b8;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Vista Grid */
+.vista-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.receta-card-grid {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.receta-card-grid:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.receta-card-grid.favorita {
+  border-left: 4px solid #ffc107;
+}
+
+.grid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.grid-header h3 {
+  margin: 0;
+  font-size: 1.1em;
+  flex: 1;
+}
+
+.btn-favorito-grid {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.grid-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.grid-content .ingredientes-preview {
+  color: #6c757d;
+  font-size: 0.9em;
   line-height: 1.4;
+  margin-bottom: 15px;
+}
+
+.grid-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.grid-actions button {
+  padding: 6px 12px;
+  font-size: 0.8em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .recetario-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .panel-filtros {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .form-fila {
+    grid-template-columns: 1fr;
+  }
+  
+  .vista-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .receta-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .receta-actions {
+    flex-direction: column;
+  }
 }
