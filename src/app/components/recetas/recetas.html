@@ -1,0 +1,17 @@
+<div class="contenedor">
+    <h2>Recetas disponibles</h2>
+
+    <div *ngIf="recetas.length === 0" class="mensaje">
+        No hay recetas disponibles.
+    </div>
+
+    <ul *ngIf="recetas.length > 0">
+        <li *ngFor="let receta of recetas" class="receta-card">
+            <h3>{{ receta.titulo }}</h3>
+            <p><strong>Ingredientes:</strong> {{ receta.ingredientes.join(', ') }}</p>
+            <ul>
+                <li *ngFor="let paso of receta.pasos">{{ paso }}</li>
+            </ul>
+        </li>
+    </ul>
+</div>
